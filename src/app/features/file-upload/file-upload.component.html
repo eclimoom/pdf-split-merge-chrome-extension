@@ -1,0 +1,25 @@
+<h3>欢迎使用 PDF拆分与合并工具</h3>
+<div class="note" *ngIf="!fileType">请选择PDF拆分， 或者选择多个图片合并</div>
+<input type="file" id="file-upload" (change)="onFileSelected($event)" multiple class="visually-hidden">
+<div class="upload-wrapper">
+  <button class="btn btn-primary" for="file-upload">选择文件</button>
+  <button class="btn btn-secondary" (click)="openUrlModal()">URL加载</button>
+  <label class="upload-container"
+         for="file-upload"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)">
+    <p>拖拽文件到此区域，或</p>
+
+    <div *ngIf="fileType === 'pdf'">
+      <h2>PDF拆分规则</h2>
+      <!-- PDF拆分规则表单 -->
+
+    </div>
+    <div *ngIf="fileType === 'images'">
+      <h2>立即合并图片为PDF</h2>
+      <!-- 图片合并表单 -->
+    </div>
+  </label>
+</div>
+

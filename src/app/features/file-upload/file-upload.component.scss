@@ -1,0 +1,18 @@
+.upload-wrapper{
+  position: relative;
+}
+.upload-container {
+  border: 2px dashed #007bff;
+  border-radius: 10px;
+  text-align: center;
+  padding: 30px;
+  width: 100%;
+  background-color: #f8f9fa;
+  p {
+    margin: 10px 0;
+    color: #6c757d;
+  }
+  button {
+    margin: 10px;
+  }
+}
