@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FileUploadComponent } from './features/file-upload/file-upload.component';
 import { HomeComponent } from './features/home/home.component';
+import { FileSizePipe } from './pipes/file-size.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     FileUploadComponent,
-    HomeComponent
+    HomeComponent,
+    FileSizePipe
   ],
   imports: [
     BrowserModule,
