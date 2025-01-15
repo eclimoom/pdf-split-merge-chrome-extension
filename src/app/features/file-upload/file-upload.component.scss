@@ -15,4 +15,7 @@
   button {
     margin: 10px;
   }
+  &.drag-over{
+    border: 2px dashed #28a745;
+  }
 }

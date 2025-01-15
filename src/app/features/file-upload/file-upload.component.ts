@@ -1,11 +1,7 @@
 import {Component} from '@angular/core';
-import * as pdfjs from 'pdfjs-dist';
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry.js';
-import {PDFDocumentProxy} from "pdfjs-dist/types/src/display/api";
 import {PDFDocument} from 'pdf-lib';
 
 
-pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 @Component({
   selector: 'app-file-upload',
@@ -28,40 +24,44 @@ export class FileUploadComponent {
         this.fileType = 'images';
       }
     }
-    this.files = this.files.concat([ ...files]);
+    this.files = this.files.concat([...files]);
 
+    // Start processing files recursively
+    await this.processFile(0, files);
+  }
 
-    // 遍历文件
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      console.log('file', file);
-      const arrayBuffer = await file.arrayBuffer();
-      const splitFiles = await this.splitPdf(arrayBuffer);
+  async processFile(index: number, files: File[]) {
+    if (index >= files.length) return;
 
-      const name = file.name.replace('.pdf', '');
-      splitFiles.forEach((pdf, index) => {
-        const newFile = {
-          name: `${name}_${pdf.pageNumber}.pdf`,
-          // size
-          size: pdf.pdfBytes.byteLength,
-          type: 'application/pdf',
-          // type
-        };
+    const file = files[index];
+    console.log('file', file);
+    const arrayBuffer = await file.arrayBuffer();
+    const splitFiles = await this.splitPdf(arrayBuffer);
 
-        const blob = new Blob([pdf.pdfBytes], {type: newFile.type});
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = newFile.name;
-        link.click();
-        this.splitList.push(newFile);
-      });
-    }
+    const name = file.name.replace('.pdf', '');
+    splitFiles.forEach((pdf, index) => {
+      const newFile = {
+        name: `${name}_${pdf.pageNumber}.pdf`,
+        size: pdf.pdfBytes.byteLength,
+        type: 'application/pdf',
+      };
+
+      const blob = new Blob([pdf.pdfBytes], { type: newFile.type });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = newFile.name;
+      link.click();
+      this.splitList.push(newFile);
+    });
+
+    // Process the next file
+    await this.processFile(index + 1, files);
   }
 
   // 分割pdf
 // Function to split PDF
   async splitPdf(pdfBytes: Uint8Array | ArrayBuffer) {
-    const originalPdf = await PDFDocument.load(pdfBytes);
+    const originalPdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
     const numPages = originalPdf.getPageCount();
     const splitFiles = [];
     for (let i = 0; i < numPages; i++) {
@@ -69,8 +69,10 @@ export class FileUploadComponent {
       const pdfDoc = await PDFDocument.create();
       const [page] = await pdfDoc.copyPages(originalPdf, [i]);
       pdfDoc.addPage(page);
+      console.log(`Page ${i + 1} content:`, page.doc);
       // Serialize the PDF to bytes
       const pdfBytes = await pdfDoc.save();
+      console.log(`Page ${i + 1} extracted, size: ${pdfBytes.byteLength} bytes`);
       splitFiles.push({
         pageNumber: i + 1,
         pdfBytes,
