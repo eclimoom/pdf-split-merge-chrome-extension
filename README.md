@@ -14,7 +14,10 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## 构建
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `ng build ` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+Use the `--prod` flag for a production build.
+`ng build --prod --base-href ./pdf/`
 
 ## 运行单元测试
 
@@ -37,6 +40,9 @@ http://devfront.top/file-page/privacy.html
 3. 实现pdf合并， 将多个pdf合并为一个pdf
    - 合并名字 原名称合并.pdf
 
+
+用途
+1. pdf拆分， 用于将多页pdf拆分为单页pdf， 用于打印
 
 ## 项目基本结构
   

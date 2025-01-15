@@ -9,3 +9,12 @@
 
 /* Importing Datepicker SCSS file. */
 @import "../../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
+
+
+//"default_popup_width": 620,
+//"default_popup_height": 700
+
+body{
+  width: 800px;  /* max: 800px */
+  height: 600px; /* max: 600px */
+}

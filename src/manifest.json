@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "PDF Split 拆分合并",
+  "description": "A Chrome extension to split and merge PDF files. \n PDF文件拆分合并工具",
+  "default_locale": "en",
+  "version": "0.1",
+  "permissions": [
+    "downloads"
+  ],
+  "action": {
+    "default_popup": "index.html",
+    "default_popup_width": 620,
+    "default_popup_height": 700
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  },
+  "icons": {
+    "16": "assets/icons/16.png",
+    "48": "assets/icons/48.png",
+    "128": "assets/icons/128.png"
+  }
+}
