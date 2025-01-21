@@ -37,11 +37,9 @@ export class FileUploadComponent {
 
     let list: any = [];
     for (const file of files) {
-      console.log('file', file.type);
       if (file.type.includes('pdf')) {
         const arrayBuffer = await file.arrayBuffer();
         const splitFiles = await this.splitPdf(arrayBuffer);
-        // console.log(splitFiles, 'splitFiles');
         splitFiles.forEach((pdf, index) => {
           const newFile = {
             name: `${file.name}_${pdf.pageNumber}.pdf`,
@@ -52,6 +50,8 @@ export class FileUploadComponent {
           list.push(newFile);
         });
       } else if (file.type.startsWith('image/')) {
+        // get image base64
+        file.base64 = await this.readFileAsBase64(file);
         list.push(file);
       } else {
         alert('不支持的文件类型'+file.type);
@@ -64,8 +64,17 @@ export class FileUploadComponent {
     this.files = this.files.concat(list);
     // console.log(this.files)
 
-    // Start processing files recursively
-    // await this.processFile(0, files);
+    // 如果是分割模式，直接分割
+    this.splitPdfAll().then();
+  }
+
+  readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
   }
 
   async processFile(index: number, files: File[]) {
@@ -144,11 +153,6 @@ export class FileUploadComponent {
   }
 
 
-  openUrlModal() {
-
-  }
-
-
   onDragOver(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
@@ -200,5 +204,38 @@ export class FileUploadComponent {
 
   listOrderChanged($event: any) {
     console.log('listOrderChanged', $event);
+  }
+
+  async splitPdfAll() {
+    // Start processing files recursively
+    await this.processFile(0, this.files);
+  }
+
+  async mergeFiles() {
+    const pdfDoc = await PDFDocument.create();
+
+    // const pdfjs = pdfjsLib.getDocument(this.files[0]);
+    for (const file of this.files) {
+      // const pdfDoc2 = await PDFDocument.load(file);
+      // const [existingPage] = await pdfDoc.copyPages(pdfDoc2, [0])
+      // pdfDoc.addPage(existingPage)
+
+      const page = pdfDoc.addPage()
+      // convert pngbase64 to PDFImage
+      const pdfImage = await pdfDoc.embedPng(file.base64)
+      // draw image to the center of the page
+      page.drawImage(pdfImage, {
+        x: 0,
+        y: 0,
+        width: page.getWidth(),
+        height: page.getHeight(),
+      })
+    }
+    const mergedPdfBytes = await pdfDoc.save();
+    const blob = new Blob([mergedPdfBytes], {type: 'application/pdf'});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'merged.pdf';
+    link.click();
   }
 }
