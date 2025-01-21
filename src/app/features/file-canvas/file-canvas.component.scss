@@ -1,0 +1,157 @@
+$file-border-color: rgba(0, 0, 0, 0);
+$file-hover-border-color: #9999a2;
+$file-shadow: 0 0 8px 0 rgba(0, 0, 0, .08);
+$file-hover-shadow: 0 1px 2px 0 rgba(0, 0, 0, .6);
+$file-btn-bg: #ebebf4;
+$file-btn-hover-bg: #e5322d;
+$file-btn-icon-color: #47474f;
+$file-btn-icon-hover-color: #fff;
+
+.file, .page-element, .range-element {
+  margin: 4px 4px 0;
+  padding-top: 6px;
+  width: 146px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: space-around;
+  justify-content: center;
+  position: relative;
+  border: 1px solid $file-border-color;
+  background: #fdfdfd;
+  border-radius: 8px;
+  box-shadow: $file-shadow;
+
+  &:hover {
+    border: 1px solid $file-hover-border-color;
+    transition: all .2s ease-out;
+
+    .file-actions {
+      display: flex;
+    }
+
+    .file-canvas:after {
+      opacity: .6;
+    }
+  }
+}
+
+.file-actions {
+  top: 6px;
+  right: 6px;
+  position: absolute;
+  display: none;
+  //display: flex;
+  z-index: 9;
+}
+
+.file-btn {
+  padding: 3px;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  text-align: center;
+  background: $file-btn-bg;
+  margin-left: 4px;
+  z-index: 1030;
+  border-radius: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $file-hover-shadow;
+
+  &:hover {
+    background: $file-btn-hover-bg;
+
+    svg {
+      fill: $file-btn-icon-hover-color;
+    }
+  }
+
+  svg {
+    fill: $file-btn-icon-color;
+  }
+
+  &.rotate svg {
+    padding-bottom: 1px;
+  }
+}
+
+.file-canvas {
+  display: flex;
+  position: relative;
+  align-items: center;
+  height: 180px;
+  width: 127px;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
+    opacity: .4;
+    transition: opacity .3s ease-in-out;
+    z-index: 0;
+  }
+
+  canvas {
+    background-color: #fff;
+    display: flex;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  &.pdf canvas {
+    background-image: url('../../../assets/filetype/pdf.svg');
+  }
+
+  &.image canvas {
+    background-image: url('../../../assets/filetype/image.svg');
+  }
+
+  &.doc canvas, &.docx canvas, &.word canvas {
+    background-image: url('../../../assets/filetype/doc.svg');
+  }
+
+  &.odg canvas, &.odp canvas, &.odt canvas {
+    background-image: url('../../../assets/filetype/odt.svg');
+  }
+
+  &.xls canvas, &.xlsx canvas, &.excel canvas {
+    background-image: url('../../../assets/filetype/xls.svg');
+  }
+
+  &.ppt canvas, &.pptx canvas, &.powerpoint canvas {
+    background-image: url('../../../assets/filetype/ppt.svg');
+  }
+
+  &.password canvas {
+    background-image: url('../../../assets/filetype/password.svg');
+  }
+
+  &.zip canvas, &.rar canvas {
+    background-image: url('../../../assets/filetype/zip.svg');
+  }
+
+}
+
+.file-info {
+  height: 26px;
+  line-height: 26px;
+  width: 100%;
+  color: #47474f;
+  align-items: center;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  padding: 0 8px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  z-index: 99;
+}

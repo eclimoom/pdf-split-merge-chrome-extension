@@ -21,6 +21,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "ngx-bootstrap": "10.3.0",
+    "ngx-sortable": "^2.1.0",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "3.10.111",
     "rxjs": "~7.8.0",

@@ -1,0 +1,16 @@
+<!--file-merge-->
+<div class="file">
+  <div class="file-actions">
+<!--    <a class="file-btn rotate" data-rotate="0" title="旋转"-->
+<!--       draggable="false">-->
+<!--      <span class="bi-arrow-repeat"></span>-->
+<!--    </a>-->
+    <a class="file-btn remove" title="删除此文件" (click)="removeFile.emit(file)" data-title="删除此文件">
+      <span class="bi-x"></span>
+    </a>
+  </div>
+  <div class="file-canvas" >
+    <canvas #canvas></canvas>
+  </div>
+  <div class="file-info">{{file?.name}}</div>
+</div>
