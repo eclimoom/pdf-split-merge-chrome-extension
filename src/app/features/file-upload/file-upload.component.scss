@@ -1,5 +1,11 @@
 .upload-wrapper {
   position: relative;
+  .tools-wrap{
+    align-items: flex-end;
+  }
+  .btn-group{
+    height: 30px;
+  }
 }
 
 .upload-container {
@@ -13,6 +19,9 @@
   p {
     margin: 10px 0;
     color: #6c757d;
+    span{
+      font-size: 14px;
+    }
   }
 
   button {

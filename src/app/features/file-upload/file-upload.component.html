@@ -1,12 +1,18 @@
-<div class="note pt-1 bi-journal-text text-sm-start small" *ngIf="!fileType">请选择要拆分的PDF文件,
-  将多页PDF文件拆分为单页文件
+<div class="note pt-1 bi-journal-text text-sm-start small" *ngIf="!fileType">
+  请选择要拆分的PDF文件, 将多页PDF文件拆分为单页文件
 </div>
 <input type="file" id="file-upload" (change)="handleUpload($event)" multiple class="visually-hidden">
 <div class="upload-wrapper">
-  <div class="d-flex pt-1">
+  <div class="d-flex pt-1 tools-wrap">
     <label class="btn btn-primary" for="file-upload">选择文件</label>
-    <button class="btn btn-sm btn-secondary ms-auto" (click)="handleModel()">{{ isSplit ? '拆分' : '合并' }}模式
-    </button>
+<!--    <button class="btn btn-sm btn-secondary ms-auto" (click)="handleModel()">{{ isSplit ? '拆分' : '合并' }}模式</button>-->
+
+    <div class="btn-group btn-group-sm ms-auto">
+      <input type="radio" class="btn-check" (click)="handleModel(true)" name="btnradio" id="btnradio1" autocomplete="off" [checked]="isSplit">
+      <label class="btn btn-outline-primary" for="btnradio1">拆分模式</label>
+      <input type="radio" (click)="handleModel(false)" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" [checked]="!isSplit">
+      <label class="btn btn-outline-primary" for="btnradio2">合并模式</label>
+    </div>
   </div>
   <div class="pt-1">
     <label class="upload-container"
@@ -15,7 +21,8 @@
            (dragover)="onDragOver($event)"
            (dragleave)="onDragLeave($event)"
            (drop)="onDrop($event)">
-      <p>拖拽文件到此区域进行{{ isSplit ? '拆分' : '合并' }}</p>
+      <p *ngIf="isSplit">拖拽文件到此区域进行{{ isSplit ? '拆分' : '合并' }}</p>
+      <p *ngIf="!isSplit">合并PDF文件，并按照您的喜好排序，简单又快速 <span>支持合并的文件格式：PDF、图片</span></p>
 
       <div *ngIf="fileType === 'pdf'">
         <h2>PDF拆分规则</h2>
@@ -68,7 +75,7 @@
     </ngx-sortable>
 
     <div class="">
-      <button class="btn btn-primary" (click)="mergeFiles()">立即合并</button>
+      <button class="btn btn-primary" (click)="handleByModel()">立即{{ isSplit ? '拆分': '合并' }}</button>
     </div>
 
 
