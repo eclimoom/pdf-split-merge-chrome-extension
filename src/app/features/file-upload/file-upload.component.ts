@@ -16,16 +16,24 @@ export class FileUploadComponent {
 
   // 模式
   isSplit: boolean = true;
+  showSpinner: boolean = false;
 
   constructor() {
     // todo get pdf.worker.js from assets by environment
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.js';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = './assets/pdf.worker.js';
   }
 
+
+  init() {
+    this.files = [];
+    this.splitList = [];
+    this.fileType = '';
+  }
 
   async onFileSelected(files: any) {
     if (!files[0]) return;
 
+    this.showSpinner = true;
     if (files.length > 0) {
       const file = files[0];
       if (file.type === 'application/pdf') {
@@ -46,7 +54,7 @@ export class FileUploadComponent {
             size: pdf.pdfBytes.byteLength,
             type: 'application/pdf',
             base64: pdf.base64,
-            arrayBuffer: () => file.arrayBuffer()
+            arrayBuffer: () => pdf.pdfBytes
           };
           list.push(newFile);
         });
@@ -58,12 +66,12 @@ export class FileUploadComponent {
       } else {
         alert('不支持的文件类型' + file.type);
       }
-
     }
     // 如果是pdf文件，直接分割
-
+    this.showSpinner = false;
 
     this.files = this.files.concat(list);
+    // console.log('files>>>>>>', this.files);
   }
 
   readFileAsBase64(file: File): Promise<string> {
@@ -99,8 +107,6 @@ export class FileUploadComponent {
 
   async processFile(index: number, files: File[]) {
     if (index >= files.length) return;
-
-    console.log(`>>>>>> 拆分pdf ${index + 1} of ${files.length}`);
     const file = files[index];
     const arrayBuffer = await file.arrayBuffer();
     const splitFiles = await this.splitPdf(arrayBuffer);
@@ -137,11 +143,11 @@ export class FileUploadComponent {
       let page: any;
       [page] = await pdfDoc.copyPages(originalPdf, [i]);
       pdfDoc.addPage(page);
-      console.log(`Page ${i + 1} content:`, page.doc);
+      // console.log(`Page ${i + 1} content:`, page.doc);
       // Serialize the PDF to bytes
       const pdfBytes = await pdfDoc.save();
-      console.log('pdfBytes>>>>>>11111', pdfBytes);
-      console.log(`Page ${i + 1} extracted, size: ${pdfBytes.byteLength} bytes`);
+      // console.log('pdfBytes>>>>>>11111', pdfBytes);
+      // console.log(`Page ${i + 1} extracted, size: ${pdfBytes.byteLength} bytes`);
 
 
       let pdf = await pdfjsLib.getDocument(new Uint8Array(pdfBytes)).promise;
@@ -165,10 +171,10 @@ export class FileUploadComponent {
         await basePage.render(renderContext).promise;
       }
       let base64 = canvas.toDataURL('image/png');
-      console.log('base64========', pdfBytes, base64.length);
+      // console.log('base64========', pdfBytes, base64.length);
       splitFiles.push({
         pageNumber: i + 1,
-        pdfBytes: pdfBytes,
+        pdfBytes: new Uint8Array(await pdf.getData()),
         base64
       });
     }
@@ -274,14 +280,12 @@ export class FileUploadComponent {
 
 
   handleModel(flag: boolean) {
-    console.log(`handleModel: ${flag}`);
+    // this.init();
     this.isSplit = flag;
-    if (flag) {
-      this.splitPdfAll().then();
-    }
   }
 
   handleByModel() {
+
     if (this.isSplit) {
       this.splitPdfAll().then();
     } else {

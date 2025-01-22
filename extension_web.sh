@@ -7,7 +7,7 @@ scp -r dist/pdf root@39.106.132.159:/usr/share/nginx/
 
 
 
-
-scp -r src/privacy_pdf.html root@39.106.132.159:/usr/share/nginx/file-page/
+### scp 隐私政策
+#scp -r src/privacy_pdf.html root@39.106.132.159:/usr/share/nginx/file-page/
 
 
