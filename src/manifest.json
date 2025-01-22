@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "PDF Split 拆分合并",
-  "description": "A Chrome extension to split and merge PDF files. \n PDF文件拆分合并工具",
+  "name": "PDF拆分 PDF合并",
+  "description": "PDF拆分,PDF合并, 拆分PDF.A Chrome extension to split and merge PDF files. \n PDF文件拆分合并工具, 支持拆分合并PDF文件.",
   "default_locale": "en",
-  "version": "0.1",
+  "version": "0.2",
   "permissions": [
     "downloads"
   ],
