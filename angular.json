@@ -29,7 +29,9 @@
               "src/favicon.ico",
               "src/assets",
               "src/_locales",
-              "src/manifest.json"
+              "src/manifest.json",
+              "src/content.js",
+              "src/background.js"
             ],
             "styles": [
               "src/assets/styles.scss"

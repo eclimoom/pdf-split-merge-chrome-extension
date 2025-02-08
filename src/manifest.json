@@ -5,7 +5,19 @@
   "default_locale": "en",
   "version": "0.2",
   "permissions": [
-    "downloads"
+    "downloads",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
   ],
   "action": {
     "default_popup": "index.html",
